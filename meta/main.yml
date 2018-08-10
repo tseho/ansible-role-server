@@ -1,0 +1,12 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: tseho
+  description: Basic server config & security
+  license: "license (MIT)"
+  min_ansible_version: 2.4
+  platforms:
+    - name: Debian
+      versions:
+        - all
