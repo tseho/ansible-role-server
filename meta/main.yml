@@ -2,6 +2,7 @@
 dependencies: []
 
 galaxy_info:
+  role_name: server
   author: tseho
   description: Basic server config & security
   license: "license (MIT)"
