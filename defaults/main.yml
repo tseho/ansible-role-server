@@ -1,0 +1,13 @@
+---
+
+server_php_dependencies:
+  - apt-transport-https
+  - ca-certificates
+
+server_tools:
+  - git
+  - acl
+  - jpegoptim
+  - optipng
+
+server_writable_paths: []
