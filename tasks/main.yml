@@ -47,7 +47,7 @@
   become: true
   acl:
     path: "{{ item.path }}"
-    permissions: rwX
+    permissions: rwx
     entity: "{{ item.user }}"
     etype: user
     recursive: yes
@@ -60,10 +60,9 @@
   become: true
   acl:
     path: "{{ item.path }}"
-    permissions: rwX
+    permissions: rwx
     entity: "{{ item.user }}"
     etype: user
-    recursive: yes
     follow: yes
     default: yes
     state: present
