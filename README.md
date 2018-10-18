@@ -6,4 +6,4 @@ ansible-galaxy install tseho.server
 ```
 
 ## Usage
-See [defaults](defaults/main.md) for available options.
+See [defaults](defaults/main.yml) for available options.
