@@ -11,3 +11,6 @@ server_tools:
   - optipng
 
 server_writable_paths: []
+# server_writable_paths:
+#   - path: "/var/foo"
+#     user: "www-data"

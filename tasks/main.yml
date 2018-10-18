@@ -39,16 +39,16 @@
 - name: Ensure writable paths exists
   become: true
   file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     state: directory
   with_items: "{{ server_writable_paths }}"
 
 - name: Set up files permissions
   become: true
   acl:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     permissions: rwX
-    entity: "{{ ansible_user }}"
+    entity: "{{ item.user }}"
     etype: user
     recursive: yes
     follow: yes
@@ -59,9 +59,9 @@
 - name: Set up default files permissions
   become: true
   acl:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     permissions: rwX
-    entity: "{{ ansible_user }}"
+    entity: "{{ item.user }}"
     etype: user
     recursive: yes
     follow: yes
