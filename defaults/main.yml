@@ -1,16 +1,25 @@
 ---
 
+server_php_support: false
 server_php_dependencies:
   - apt-transport-https
   - ca-certificates
 
-server_tools:
-  - git
-  - acl
-  - jpegoptim
-  - optipng
+server_packages: []
+# server_packages:
+#   - git
 
 server_writable_paths: []
 # server_writable_paths:
 #   - path: "/var/foo"
 #     user: "www-data"
+
+server_iptables_rules_path: /etc/iptables.rules
+server_iptables_rules_template: iptables.j2
+
+server_iptables_preup_path: /etc/network/if-pre-up.d/iptables
+server_iptables_preup_template: iptables-pre-up.j2
+
+server_iptables_open_ports: []
+# server_iptables_open_ports:
+#   - 9000

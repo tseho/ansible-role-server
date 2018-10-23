@@ -1,0 +1,23 @@
+---
+- name: Add dependencies for PHP versions (Debian).
+  become: true
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ server_php_dependencies }}"
+
+- name: Add Ondrej Sury's apt key (Debian).
+  become: true
+  apt_key:
+    url: https://packages.sury.org/php/apt.gpg
+    state: present
+
+- name: Add Ondrej Sury's repo (Debian).
+  become: true
+  apt_repository:
+    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
+    state: present
+  register: php_ondrej_debian_repo
+
+- name: Update apt cache
+  become: true
+  apt: update_cache=yes cache_valid_time=86400

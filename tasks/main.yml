@@ -3,67 +3,32 @@
   become: true
   apt: update_cache=yes cache_valid_time=86400
 
-- name: Add dependencies for PHP versions (Debian).
-  become: true
-  apt:
-    name: "{{ item }}"
-  with_items: "{{ server_php_dependencies }}"
+- include_tasks: "php.yml"
+  when: server_php_support
 
-- name: Add Ondrej Sury's apt key (Debian).
-  become: true
-  apt_key:
-    url: https://packages.sury.org/php/apt.gpg
-    state: present
+- include_tasks: "acl.yml"
 
-- name: Add Ondrej Sury's repo (Debian).
-  become: true
-  apt_repository:
-    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
-    state: present
-  register: php_ondrej_debian_repo
-
-- name: Update apt cache
-  become: true
-  apt: update_cache=yes cache_valid_time=86400
-
-- name: Install tools
+- name: Install basic packages
   become: true
   apt: name={{item}}
-  with_items: "{{ server_tools }}"
+  with_items: "{{ server_packages }}"
+  when: server_packages|length > 0
 
 - name: Set up iptables rules
   become: true
-  copy: src=iptables dest=/etc/iptables.rules
+  template:
+    src: "{{ server_iptables_rules_template }}"
+    dest: "{{ server_iptables_rules_path }}"
+    owner: root
+    group: root
+    mode: "0644"
   notify: restart iptables
 
-- name: Ensure writable paths exists
+- name: Set up pre-up script for restoring iptables rules on reboot
   become: true
-  file:
-    path: "{{ item.path }}"
-    state: directory
-  with_items: "{{ server_writable_paths }}"
-
-- name: Set up files permissions
-  become: true
-  acl:
-    path: "{{ item.path }}"
-    permissions: rwx
-    entity: "{{ item.user }}"
-    etype: user
-    recursive: yes
-    follow: yes
-    default: no
-    state: present
-  with_items: "{{ server_writable_paths }}"
-
-- name: Set up default files permissions
-  become: true
-  acl:
-    path: "{{ item.path }}"
-    permissions: rwx
-    entity: "{{ item.user }}"
-    etype: user
-    follow: yes
-    default: yes
-    state: present
-  with_items: "{{ server_writable_paths }}"
+  template:
+    src: "{{ server_iptables_preup_template }}"
+    dest: "{{ server_iptables_preup_path }}"
+    owner: root
+    group: root
+    mode: "0744"
