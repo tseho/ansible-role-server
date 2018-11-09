@@ -22,7 +22,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify: restart iptables
+  notify: Restart iptables
 
 - name: Set up pre-up script for restoring iptables rules on reboot
   become: true
