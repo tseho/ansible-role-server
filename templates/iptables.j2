@@ -18,7 +18,7 @@
 -A INPUT -p tcp --dport 443 -j ACCEPT
 
 {% for port in server_iptables_open_ports %}
--A INPUT -p tcp --dport {{ port }} -j ACCEPT
+-A INPUT -p tcp -m tcp --dport {{ port }} -j ACCEPT
 {% endfor %}
 
 # Allows SSH connections
