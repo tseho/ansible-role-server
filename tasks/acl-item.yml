@@ -1,0 +1,43 @@
+---
+- name: Ensure writable path exists
+  become: true
+  file:
+    path: "{{ acl_item.path }}"
+    state: directory
+
+- name: Set up files permissions on base directory only
+  become: true
+  acl:
+    path: "{{ acl_item.path }}"
+    permissions: rwx
+    entity: "{{ acl_item.user }}"
+    etype: user
+    recursive: no
+    follow: no
+    default: no
+    state: present
+  register: acl_item_state
+
+- name: Set up files permissions recursively if changed
+  become: true
+  acl:
+    path: "{{ acl_item.path }}"
+    permissions: rwx
+    entity: "{{ acl_item.user }}"
+    etype: user
+    recursive: yes
+    follow: yes
+    default: no
+    state: present
+  when: acl_item_state is changed
+
+- name: Set up default files permissions
+  become: true
+  acl:
+    path: "{{ acl_item.path }}"
+    permissions: rwx
+    entity: "{{ acl_item.user }}"
+    etype: user
+    follow: yes
+    default: yes
+    state: present

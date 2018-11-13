@@ -3,34 +3,8 @@
   become: true
   apt: name=acl
 
-- name: Ensure writable paths exists
-  become: true
-  file:
-    path: "{{ item.path }}"
-    state: directory
+- name: Configure ACL on each path
+  include_tasks: acl-item.yml
   with_items: "{{ server_writable_paths }}"
-
-- name: Set up files permissions
-  become: true
-  acl:
-    path: "{{ item.path }}"
-    permissions: rwx
-    entity: "{{ item.user }}"
-    etype: user
-    recursive: yes
-    follow: yes
-    default: no
-    state: present
-  with_items: "{{ server_writable_paths }}"
-
-- name: Set up default files permissions
-  become: true
-  acl:
-    path: "{{ item.path }}"
-    permissions: rwx
-    entity: "{{ item.user }}"
-    etype: user
-    follow: yes
-    default: yes
-    state: present
-  with_items: "{{ server_writable_paths }}"
+  loop_control:
+    loop_var: acl_item
