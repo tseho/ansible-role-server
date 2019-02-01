@@ -2,8 +2,8 @@
 - name: Add dependencies for PHP versions (Debian).
   become: true
   apt:
-    name: "{{ item }}"
-  with_items: "{{ server_php_dependencies }}"
+    name: "{{ server_php_dependencies }}"
+  when: server_php_dependencies|length > 0
 
 - name: Add Ondrej Sury's apt key (Debian).
   become: true
@@ -20,4 +20,6 @@
 
 - name: Update apt cache
   become: true
-  apt: update_cache=yes cache_valid_time=86400
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400

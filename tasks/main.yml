@@ -10,8 +10,8 @@
 
 - name: Install basic packages
   become: true
-  apt: name={{item}}
-  with_items: "{{ server_packages }}"
+  apt:
+    name: "{{ server_packages }}"
   when: server_packages|length > 0
 
 - name: Set up iptables rules
