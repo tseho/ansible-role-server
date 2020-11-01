@@ -1,0 +1,20 @@
+---
+- name: Set up iptables rules
+  become: true
+  template:
+    src: "{{ server_iptables_rules_template }}"
+    dest: "{{ server_iptables_rules_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+    force: false
+  notify: Restart iptables
+
+- name: Set up pre-up script for restoring iptables rules on reboot
+  become: true
+  template:
+    src: "{{ server_iptables_preup_template }}"
+    dest: "{{ server_iptables_preup_path }}"
+    owner: root
+    group: root
+    mode: "0744"

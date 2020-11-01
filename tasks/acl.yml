@@ -1,7 +1,11 @@
 ---
 - name: Install ACL
   become: true
-  apt: name=acl
+  apt:
+    name: acl
+    state: present
+    update_cache: yes
+    cache_valid_time: 86400
 
 - name: Configure ACL on each path
   include_tasks: acl-item.yml

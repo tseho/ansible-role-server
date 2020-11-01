@@ -1,3 +1,6 @@
 ---
 - name: Restart iptables
   shell: iptables-restore < {{ server_iptables_rules_path }}
+
+- name: Save iptables
+  shell: iptables-save > {{ server_iptables_rules_path }}
